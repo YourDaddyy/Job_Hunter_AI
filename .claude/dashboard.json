@@ -1,0 +1,81 @@
+{
+  "name": "Job Viewer - Digital Headhunter",
+  "description": "AI-powered autonomous job search and application system that acts as a 24/7 digital headhunter for US/Canada remote AI/Backend roles",
+  "priority_boost": 20,
+  "business_override": 75,
+  "stage": "planning",
+  "target_audience": {
+    "persona": "Job seekers (especially tech professionals) who lack time to manually search and apply to jobs",
+    "pain_level": 9,
+    "willingness_to_pay": "Medium - would pay $20-50/mo for autonomous job hunting"
+  },
+  "monetization": "Personal tool (cost savings on time)",
+  "todos": [
+    {
+      "id": "phase1-setup",
+      "title": "Phase 1: Set up project structure and database",
+      "priority": "high",
+      "status": "pending",
+      "phase": 1
+    },
+    {
+      "id": "phase1-searcher",
+      "title": "Phase 1: Implement Playwright Searcher for LinkedIn",
+      "priority": "high",
+      "status": "pending",
+      "phase": 1
+    },
+    {
+      "id": "phase1-filter",
+      "title": "Phase 1: Integrate GLM-4.7 for JD filtering",
+      "priority": "high",
+      "status": "pending",
+      "phase": 1
+    },
+    {
+      "id": "phase1-telegram",
+      "title": "Phase 1: Build Telegram bot with basic commands",
+      "priority": "medium",
+      "status": "pending",
+      "phase": 1
+    },
+    {
+      "id": "phase2-chromadb",
+      "title": "Phase 2: Set up ChromaDB with achievement embeddings",
+      "priority": "medium",
+      "status": "pending",
+      "phase": 2
+    },
+    {
+      "id": "phase2-tailor",
+      "title": "Phase 2: Build Tailor Agent with contextual matching",
+      "priority": "medium",
+      "status": "pending",
+      "phase": 2
+    },
+    {
+      "id": "phase3-orchestration",
+      "title": "Phase 3: Implement LangGraph state machine",
+      "priority": "medium",
+      "status": "pending",
+      "phase": 3
+    },
+    {
+      "id": "phase4-applier",
+      "title": "Phase 4: Implement Applier Agent with Docker sandboxing",
+      "priority": "low",
+      "status": "pending",
+      "phase": 4
+    }
+  ],
+  "api_services": [
+    "GLM-4.7 (filtering)",
+    "OpenAI/Claude (tailoring)",
+    "Telegram Bot API"
+  ],
+  "risks": [
+    "LinkedIn anti-bot detection",
+    "Terms of Service compliance",
+    "LLM API costs at scale"
+  ]
+}

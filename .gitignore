@@ -1,0 +1,48 @@
+# Environment and secrets
+.env
+.env.local
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Data and logs
+data/
+logs/
+*.db
+*.sqlite
+*.sqlite3
+chroma/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker/volumes/
+
+# Generated files
+*.pdf
+resumes/generated/
+
+# Node (if any frontend added later)
+node_modules/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
