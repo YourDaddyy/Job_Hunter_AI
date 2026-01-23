@@ -3,6 +3,14 @@
 .env.local
 *.env
 
+# Personal config files (use *.example.md as templates)
+config/resume.md
+config/preferences.md
+config/achievements.md
+
+# Claude Code local settings
+.claude/settings.local.json
+
 # Python
 __pycache__/
 *.py[cod]
