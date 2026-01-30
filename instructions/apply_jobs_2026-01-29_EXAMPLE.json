@@ -1,0 +1,90 @@
+{
+  "_metadata": {
+    "generated_at": "2026-01-29T18:00:00",
+    "task_type": "apply_to_jobs",
+    "campaign_date": "2026-01-29",
+    "version": "1.0"
+  },
+  "user_info": {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "phone": "+1-555-123-4567",
+    "linkedin_url": "https://linkedin.com/in/johndoe"
+  },
+  "applications": [
+    {
+      "job_id": 123,
+      "company": "Scribd",
+      "title": "AI Engineer",
+      "url": "https://jobs.lever.co/scribd/ai-engineer-abc123",
+      "source": "lever",
+      "score": 92,
+      "resume_path": "output/Scribd_AI_Engineer.pdf",
+      "platform_type": "lever",
+      "instructions": "\n1. Navigate to https://jobs.lever.co/scribd/ai-engineer-abc123\n2. Click \"Apply for this job\" button\n3. Fill form fields:\n   - Full Name: John Doe\n   - Email: john.doe@example.com\n   - Phone: +1-555-123-4567\n   - Resume: Upload file \"output/Scribd_AI_Engineer.pdf\"\n   - Additional Information: \"Please see my resume for detailed experience\"\n4. **PAUSE at Submit button** - Wait for user confirmation\n",
+      "pause_before_submit": true,
+      "rate_limit_seconds": 300
+    },
+    {
+      "job_id": 124,
+      "company": "Anthropic",
+      "title": "ML Engineer",
+      "url": "https://jobs.greenhouse.io/anthropic/ml-engineer-def456",
+      "source": "greenhouse",
+      "score": 88,
+      "resume_path": "output/Anthropic_ML_Engineer.pdf",
+      "platform_type": "greenhouse",
+      "instructions": "\n1. Navigate to https://jobs.greenhouse.io/anthropic/ml-engineer-def456\n2. Click \"Apply\" or \"Submit Application\" button\n3. Fill form fields:\n   - First Name: John\n   - Last Name: Doe\n   - Email: john.doe@example.com\n   - Phone: +1-555-123-4567\n   - Resume: Upload file \"output/Anthropic_ML_Engineer.pdf\"\n   - LinkedIn: https://linkedin.com/in/johndoe\n4. Answer any screening questions (use best judgment or skip optional)\n5. **PAUSE at Submit button** - Wait for user confirmation\n",
+      "pause_before_submit": true,
+      "rate_limit_seconds": 300
+    },
+    {
+      "job_id": 125,
+      "company": "Cohere",
+      "title": "Research Engineer",
+      "url": "https://jobs.ashbyhq.com/cohere/research-engineer-ghi789",
+      "source": "ashby",
+      "score": 86,
+      "resume_path": "output/Cohere_Research_Engine.pdf",
+      "platform_type": "ashby",
+      "instructions": "\n1. Navigate to https://jobs.ashbyhq.com/cohere/research-engineer-ghi789\n2. Click \"Apply\" button\n3. Fill form fields:\n   - Name: John Doe\n   - Email: john.doe@example.com\n   - Phone: +1-555-123-4567\n   - Resume: Upload file \"output/Cohere_Research_Engine.pdf\"\n4. Answer any required questions\n5. **PAUSE at Submit button** - Wait for user confirmation\n",
+      "pause_before_submit": true,
+      "rate_limit_seconds": 300
+    },
+    {
+      "job_id": 126,
+      "company": "OpenAI",
+      "title": "Applied AI Researcher",
+      "url": "https://www.linkedin.com/jobs/view/3845678901",
+      "source": "linkedin",
+      "score": 78,
+      "resume_path": "output/OpenAI_Applied_AI_Res.pdf",
+      "platform_type": "linkedin",
+      "instructions": "\n1. Navigate to https://www.linkedin.com/jobs/view/3845678901\n2. Click \"Easy Apply\" button (if available) or \"Apply\" button\n3. For Easy Apply:\n   - Resume: Upload file \"output/OpenAI_Applied_AI_Res.pdf\"\n   - Answer screening questions\n   - Step through wizard\n4. For External Apply:\n   - Fill form on company website\n   - Use Email: john.doe@example.com, Phone: +1-555-123-4567\n5. **PAUSE at final Submit/Review step** - Wait for user confirmation\n",
+      "pause_before_submit": true,
+      "rate_limit_seconds": 300
+    },
+    {
+      "job_id": 127,
+      "company": "Hugging Face",
+      "title": "ML Infrastructure Engineer",
+      "url": "https://apply.workable.com/huggingface/j/ABC123DEF456/",
+      "source": "workable",
+      "score": 75,
+      "resume_path": "output/Hugging_Face_ML_Infr.pdf",
+      "platform_type": "workable",
+      "instructions": "\n1. Navigate to https://apply.workable.com/huggingface/j/ABC123DEF456/\n2. Click \"Apply\" button\n3. Fill form fields:\n   - Full Name: John Doe\n   - Email: john.doe@example.com\n   - Phone: +1-555-123-4567\n   - Resume: Upload file \"output/Hugging_Face_ML_Infr.pdf\"\n4. Fill any additional required fields\n5. **PAUSE at Submit button** - Wait for user confirmation\n",
+      "pause_before_submit": true,
+      "rate_limit_seconds": 300
+    }
+  ],
+  "rate_limit": {
+    "max_applications_per_hour": 5,
+    "delay_between_applications_seconds": 300
+  },
+  "safety": {
+    "pause_before_submit": true,
+    "user_confirmation_required": true,
+    "max_applications_per_day": 20
+  }
+}

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal_info.name }} - Resume</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11pt;
+            line-height: 1.3;
+            color: #000;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* ATS-Friendly: Simple, clean formatting */
+        header {
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #000;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 20pt;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .contact-info {
+            font-size: 10pt;
+            line-height: 1.5;
+        }
+
+        .contact-info div {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        /* Section Headers */
+        h2 {
+            font-size: 13pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 1px solid #000;
+            padding-bottom: 3px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+
+        /* Summary */
+        .summary {
+            font-size: 11pt;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        /* Experience */
+        .experience-item {
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+
+        .experience-title {
+            font-size: 11pt;
+            font-weight: bold;
+        }
+
+        .experience-company {
+            font-size: 11pt;
+        }
+
+        .experience-period {
+            font-size: 10pt;
+            font-style: italic;
+        }
+
+        .experience-bullets {
+            margin-top: 5px;
+            margin-left: 25px;
+        }
+
+        .experience-bullets li {
+            margin-bottom: 3px;
+        }
+
+        /* Education */
+        .education-item {
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+        }
+
+        .education-degree {
+            font-size: 11pt;
+            font-weight: bold;
+        }
+
+        .education-institution {
+            font-size: 11pt;
+        }
+
+        .education-period {
+            font-size: 10pt;
+            font-style: italic;
+        }
+
+        /* Skills - Simple list format for ATS */
+        .skills-section p {
+            font-size: 11pt;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ personal_info.name }}</h1>
+            <div class="contact-info">
+                <div>{{ personal_info.email }}</div>
+                {% if personal_info.phone %}<div>{{ personal_info.phone }}</div>{% endif %}
+                {% if personal_info.location %}<div>{{ personal_info.location }}</div>{% endif %}
+                {% if personal_info.linkedin %}<div>{{ personal_info.linkedin }}</div>{% endif %}
+                {% if personal_info.github %}<div>{{ personal_info.github }}</div>{% endif %}
+            </div>
+        </header>
+
+        {% if summary %}
+        <section class="summary-section">
+            <h2>Professional Summary</h2>
+            <p class="summary">{{ summary }}</p>
+        </section>
+        {% endif %}
+
+        {% if experience %}
+        <section class="experience-section">
+            <h2>Professional Experience</h2>
+            {% for exp in experience %}
+            <div class="experience-item">
+                <div class="experience-title">{{ exp.name }}</div>
+                <div class="experience-company">{{ exp.company }}</div>
+                {% if exp.period %}<div class="experience-period">{{ exp.period }}</div>{% endif %}
+                {% if exp.bullets %}
+                <ul class="experience-bullets">
+                    {% for bullet in exp.bullets %}
+                    <li>{{ bullet }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        {% if education %}
+        <section class="education-section">
+            <h2>Education</h2>
+            {% for edu in education %}
+            <div class="education-item">
+                <div class="education-degree">{{ edu.degree }}</div>
+                <div class="education-institution">{{ edu.institution }}</div>
+                <div class="education-period">{{ edu.period }}</div>
+                {% if edu.gpa %}<div>GPA: {{ edu.gpa }}</div>{% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        {% if skills %}
+        <section class="skills-section">
+            <h2>Skills</h2>
+            <p>{{ skills|join(', ') }}</p>
+        </section>
+        {% endif %}
+    </div>
+</body>
+
+</html>

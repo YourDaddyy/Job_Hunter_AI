@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal_info.name }} - Resume</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1.5cm 2cm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        header {
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 28pt;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 10pt;
+            color: #555;
+        }
+        
+        .contact-info span {
+            display: inline-block;
+        }
+        
+        .contact-info a {
+            color: #2c3e50;
+            text-decoration: none;
+        }
+        
+        /* Section Headers */
+        h2 {
+            font-size: 14pt;
+            color: #2c3e50;
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        /* Summary */
+        .summary {
+            font-size: 10.5pt;
+            line-height: 1.5;
+            color: #444;
+            margin-bottom: 15px;
+        }
+        
+        /* Experience */
+        .experience-item {
+            margin-bottom: 18px;
+            page-break-inside: avoid;
+        }
+        
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+        
+        .experience-title {
+            font-size: 12pt;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .experience-company {
+            font-size: 11pt;
+            color: #555;
+            font-style: italic;
+        }
+        
+        .experience-period {
+            font-size: 10pt;
+            color: #777;
+        }
+        
+        .experience-bullets {
+            margin-top: 8px;
+            margin-left: 20px;
+        }
+        
+        .experience-bullets li {
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        
+        /* Education */
+        .education-item {
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        
+        .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        
+        .education-degree {
+            font-size: 11pt;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .education-institution {
+            font-size: 10.5pt;
+            color: #555;
+        }
+        
+        .education-period {
+            font-size: 10pt;
+            color: #777;
+        }
+        
+        .education-details {
+            margin-top: 3px;
+            font-size: 10pt;
+            color: #666;
+        }
+        
+        /* Skills */
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .skill-tag {
+            background-color: #ecf0f1;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 10pt;
+            color: #2c3e50;
+        }
+        
+        /* Target Job Info (subtle) */
+        .target-job {
+            font-size: 9pt;
+            color: #999;
+            text-align: right;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ personal_info.name }}</h1>
+            <div class="contact-info">
+                <span>📧 {{ personal_info.email }}</span>
+                {% if personal_info.phone %}
+                <span>📱 {{ personal_info.phone }}</span>
+                {% endif %}
+                {% if personal_info.linkedin %}
+                <span>🔗 <a href="{{ personal_info.linkedin }}">LinkedIn</a></span>
+                {% endif %}
+                {% if personal_info.github %}
+                <span>💻 <a href="{{ personal_info.github }}">GitHub</a></span>
+                {% endif %}
+                {% if personal_info.location %}
+                <span>📍 {{ personal_info.location }}</span>
+                {% endif %}
+            </div>
+        </header>
+
+        {% if summary %}
+        <section class="summary-section">
+            <h2>Professional Summary</h2>
+            <p class="summary">{{ summary }}</p>
+        </section>
+        {% endif %}
+
+        {% if experience %}
+        <section class="experience-section">
+            <h2>Experience</h2>
+            {% for exp in experience %}
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div>
+                        <div class="experience-title">{{ exp.name }}</div>
+                        <div class="experience-company">{{ exp.company }}{% if exp.period %} | {{ exp.period }}{% endif %}</div>
+                    </div>
+                </div>
+                {% if exp.bullets %}
+                <ul class="experience-bullets">
+                    {% for bullet in exp.bullets %}
+                    <li>{{ bullet }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        {% if education %}
+        <section class="education-section">
+            <h2>Education</h2>
+            {% for edu in education %}
+            <div class="education-item">
+                <div class="education-header">
+                    <div>
+                        <div class="education-degree">{{ edu.degree }}</div>
+                        <div class="education-institution">{{ edu.institution }}</div>
+                    </div>
+                    <div class="education-period">{{ edu.period }}</div>
+                </div>
+                {% if edu.gpa %}
+                <div class="education-details">GPA: {{ edu.gpa }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        {% if skills %}
+        <section class="skills-section">
+            <h2>Skills</h2>
+            <div class="skills-list">
+                {% for skill in skills %}
+                <span class="skill-tag">{{ skill }}</span>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if target_job %}
+        <div class="target-job">
+            Tailored for: {{ target_job.title }} @ {{ target_job.company }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

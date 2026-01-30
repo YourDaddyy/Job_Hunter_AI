@@ -1,0 +1,75 @@
+{
+    "_metadata": {
+        "generated_at": "YYYY-MM-DDTHH:MM:SS",
+        "task_type": "scrape_jobs",
+        "version": "1.0",
+        "description": "Example scraping instructions - copy and rename to scrape_jobs_YYYY-MM-DD.json"
+    },
+    "credentials": {
+        "linkedin": {
+            "email": "your-email@example.com",
+            "password": "your-password"
+        },
+        "indeed": {
+            "email": "your-email@example.com",
+            "password": "your-password",
+            "login_method": "google"
+        },
+        "wellfound": {
+            "email": "your-email@example.com",
+            "password": "your-password"
+        },
+        "glassdoor": {
+            "email": "your-email@example.com",
+            "password": "your-password"
+        }
+    },
+    "search_parameters": {
+        "job_titles": [
+            "Software Engineer",
+            "Backend Engineer",
+            "Full Stack Developer"
+        ],
+        "locations": [
+            "Remote",
+            "United States"
+        ],
+        "filters": {
+            "remote_only": true,
+            "visa_sponsorship_required": false,
+            "min_salary": 80000
+        }
+    },
+    "platforms": [
+        {
+            "name": "linkedin",
+            "priority": "high",
+            "instructions": "See generated instructions for detailed scraping steps",
+            "output_file": "data/linkedin_scraped.json"
+        },
+        {
+            "name": "wellfound",
+            "priority": "high",
+            "instructions": "See generated instructions for detailed scraping steps",
+            "output_file": "data/wellfound_scraped.json"
+        }
+    ],
+    "data_schema": {
+        "required_fields": [
+            "title",
+            "company",
+            "url",
+            "description"
+        ],
+        "optional_fields": [
+            "salary",
+            "location",
+            "posted_date",
+            "easy_apply",
+            "remote",
+            "company_rating",
+            "equity",
+            "benefits"
+        ]
+    }
+}

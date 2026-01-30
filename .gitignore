@@ -7,6 +7,13 @@
 config/resume.md
 config/preferences.md
 config/achievements.md
+config/credentials.md
+config/*.docx
+config/*.pdf
+
+# Campaign reports (contain personal job search data)
+campaigns/
+!campaigns/README.md
 
 # Claude Code local settings
 .claude/settings.local.json
@@ -29,6 +36,12 @@ logs/
 *.sqlite
 *.sqlite3
 chroma/
+
+# Antigravity instructions (contain credentials)
+instructions/scrape_jobs_*.json
+!instructions/scrape_jobs_example.json
+instructions/apply_jobs_*.json
+!instructions/apply_jobs_*_EXAMPLE.json
 
 # IDE
 .idea/

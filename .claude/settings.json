@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "job-hunter": {
+      "command": "python",
+      "args": ["-m", "src.mcp_server.server"],
+      "cwd": "W:\\Code\\job_viewer"
+    }
+  }
+}

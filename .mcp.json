@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "job-hunter": {
+      "type": "stdio",
+      "command": "python",
+      "args": [
+        "-m",
+        "src.mcp_server.server"
+      ],
+      "cwd": ".",
+      "env": {
+        "GLM_API_KEY": "${GLM_API_KEY}",
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "TELEGRAM_BOT_TOKEN": "${TELEGRAM_BOT_TOKEN}",
+        "TELEGRAM_CHAT_ID": "${TELEGRAM_CHAT_ID}"
+      }
+    }
+  }
+}
