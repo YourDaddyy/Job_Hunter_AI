@@ -1,44 +1,44 @@
-# Job Hunter AI - System Architecture
+﻿# Job Hunter AI - System Architecture
 
-> **Last Updated:** 2026-01-29 (Phase 2 Complete - 62.5%)
+> **Last Updated:** 2026-01-30 (Production Release)
 
 ## Overview
 
 Job Hunter AI uses a **hybrid architecture** combining MCP Server tools with Claude Code CLI orchestration. The system delegates visual scraping to Antigravity browser agent while automating data processing through MCP tools.
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────�?
-�?                   USER (Job Seeker)                                         �?
-�?                                                                             �?
-�?  Natural Language Commands:                                                �?
-�?  "Start job hunt", "Process new jobs", "Generate report"                   �?
-└────────────────────────────┬─────────────────────────────────────────────────�?
-                             �?
-                             �?
-┌─────────────────────────────────────────────────────────────────────────────�?
-�?                   CLAUDE CODE CLI (Project Manager)                         �?
-�?                                                                             �?
-�?  Orchestrates workflow, makes decisions, coordinates tools                 �?
-�?  Pauses for manual tasks (Antigravity scraping)                            �?
-└────────────────────────────┬─────────────────────────────────────────────────�?
-                             �?
-         ┌───────────────────┼───────────────────�?
-         �?                  �?                  �?
-         �?                  �?                  �?
-┌─────────────────�? ┌──────────────────�? ┌─────────────────────�?
-�? Antigravity    �? �? MCP Server      �? �? Local Storage      �?
-�? Browser Agent  �? �? (Automated)     �? �?                    �?
-�?                �? �?                 �? �? ├─ SQLite DB       �?
-�? Manual Tasks:  �? �? Tools:          �? �? ├─ JSON Files      �?
-�? ├─ Scrape jobs �? �? ├─ Generate     �? �? ├─ PDF Resumes    �?
-�? �? from visual �? �? �? instructions  �? �? └─ Markdown       �?
-�? �? platforms   �? �? ├─ Import JSON  �? �?    Config          �?
-�? └─ Auto-apply  �? �? ├─ Filter jobs  �? �?                    �?
-�?    (future)    �? �? �? with GLM     �? �?                    �?
-�?                �? �? └─ Generate     �? �?                    �?
-�? User triggers  �? �?    resumes      �? �?                    �?
-�? via Claude     �? �?                 �? �?                    �?
-└─────────────────�? └──────────────────�? └─────────────────────�?
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    USER (Job Seeker)                                         │
+│                                                                              │
+│   Natural Language Commands:                                                │
+│   "Start job hunt", "Process new jobs", "Generate report"                   │
+└────────────────────────────┬─────────────────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    CLAUDE CODE CLI (Project Manager)                         │
+│                                                                              │
+│   Orchestrates workflow, makes decisions, coordinates tools                 │
+│   Pauses for manual tasks (Antigravity scraping)                            │
+└────────────────────────────┬─────────────────────────────────────────────────┘
+                             │
+         ┌───────────────────┼───────────────────┐
+         │                   │                   │
+         ▼                   ▼                   ▼
+┌─────────────────┐  ┌──────────────────┐  ┌─────────────────────┐
+│  Antigravity    │  │  MCP Server      │  │  Local Storage      │
+│  Browser Agent  │  │  (Automated)     │  │                     │
+│                 │  │                  │  │  ├─ SQLite DB       │
+│  Manual Tasks:  │  │  Tools:          │  │  ├─ JSON Files      │
+│  ├─ Scrape jobs │  │  ├─ Generate     │  │  ├─ PDF Resumes    │
+│  │  from visual │  │  │  instructions  │  │  └─ Markdown       │
+│  │  platforms   │  │  ├─ Import JSON  │  │     Config          │
+│  └─ Auto-apply  │  │  ├─ Filter jobs  │  │                     │
+│     (future)    │  │  │  with GLM     │  │                     │
+│                 │  │  └─ Generate     │  │                     │
+│  User triggers  │  │     resumes      │  │                     │
+│  via Claude     │  │                  │  │                     │
+└─────────────────┘  └──────────────────┘  └─────────────────────┘
 ```
 
 ## Architecture Principles
@@ -73,30 +73,30 @@ Claude Code CLI acts as a **project manager** that:
 ### 3. Data Sources Strategy
 
 ```
-┌─────────────────────────────────────────────────────────────────�?
-�?                       Data Sources                              �?
-├─────────────────────────────────────────────────────────────────�?
-�?                                                                 �?
-�? Priority 1: ATS Platforms (Highest Quality)                    �?
-�? ├─ Greenhouse                                                   �?
-�? ├─ Lever                [PLANNED - Task 6]                      �?
-�? ├─ Ashby                                                        �?
-�? └─ Workable                                                     �?
-�?    └─ Method: Google dorking (automated, no Antigravity)       �?
-�?                                                                 �?
-�? Priority 2: Visual Job Boards (High Volume)                    �?
-�? ├─ LinkedIn                                                     �?
-�? ├─ Glassdoor            [IMPLEMENTED - Tasks 3-5]              �?
-�? ├─ Wellfound                                                    �?
-�? └─ Indeed                                                       �?
-�?    └─ Method: Antigravity browser agent (manual trigger)       �?
-�?                                                                 �?
-�? Priority 3+: Other Sources (Future)                            �?
-�? ├─ RSS Feeds            [FUTURE]                               �?
-�? ├─ Company career pages [FUTURE]                               �?
-�? └─ Telegram channels    [FUTURE]                               �?
-�?                                                                 �?
-└─────────────────────────────────────────────────────────────────�?
+┌─────────────────────────────────────────────────────────────────┐
+│                        Data Sources                              │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  Priority 1: ATS Platforms (Highest Quality)                    │
+│  ├─ Greenhouse                                                   │
+│  ├─ Lever                [PLANNED - Task 6]                      │
+│  ├─ Ashby                                                        │
+│  └─ Workable                                                     │
+│     └─ Method: Google dorking (automated, no Antigravity)       │
+│                                                                  │
+│  Priority 2: Visual Job Boards (High Volume)                    │
+│  ├─ LinkedIn                                                     │
+│  ├─ Glassdoor            [IMPLEMENTED - Tasks 3-5]              │
+│  ├─ Wellfound                                                    │
+│  └─ Indeed                                                       │
+│     └─ Method: Antigravity browser agent (manual trigger)       │
+│                                                                  │
+│  Priority 3+: Other Sources (Future)                            │
+│  ├─ RSS Feeds            [FUTURE]                               │
+│  ├─ Company career pages [FUTURE]                               │
+│  └─ Telegram channels    [FUTURE]                               │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ## Data Flow
@@ -105,111 +105,111 @@ Claude Code CLI acts as a **project manager** that:
 
 ```
 1. MORNING: Generate Instructions
-   ┌─────────────────────────────────────�?
-   �?User: "Start job hunt"              �?
-   �?                                    �?
-   �?Claude �?MCP Tool:                  �?
-   �?  generate_antigravity_scraping_    �?
-   �?  guide()                           �?
-   �?  ├─ Reads config/preferences.md    �?
-   �?  �?  (24 job titles, filters)      �?
-   �?  ├─ Reads config/credentials.md    �?
-   �?  └─ Generates instructions/        �?
-   �?     scrape_jobs_2026-01-29.json    �?
-   �?                                    �?
-   �?Claude: "Please run Antigravity:"   �?
-   �?  antigravity run instructions/...  �?
-   �?                                    �?
-   �?User: [Runs Antigravity - 5 min]   �?
-   �?  �?Scrapes 150+ jobs               �?
-   �?  �?Saves to data/*.json            �?
-   └─────────────────────────────────────�?
-                  �?
+   ┌─────────────────────────────────────┐
+   │ User: "Start job hunt"              │
+   │                                     │
+   │ Claude → MCP Tool:                  │
+   │   generate_antigravity_scraping_    │
+   │   guide()                           │
+   │   ├─ Reads config/preferences.md    │
+   │   │   (24 job titles, filters)      │
+   │   ├─ Reads config/credentials.md    │
+   │   └─ Generates instructions/        │
+   │      scrape_jobs_2026-01-29.json    │
+   │                                     │
+   │ Claude: "Please run Antigravity:"   │
+   │   antigravity run instructions/...  │
+   │                                     │
+   │ User: [Runs Antigravity - 5 min]   │
+   │   → Scrapes 150+ jobs               │
+   │   → Saves to data/*.json            │
+   └─────────────────────────────────────┘
+                  ↓
 2. AUTOMATED: Import & Deduplicate
-   ┌─────────────────────────────────────�?
-   �?User: "Done scraping"               �?
-   �?                                    �?
-   �?Claude �?MCP Tool:                  �?
-   �?  import_antigravity_results()      �?
-   �?  ├─ Scans data/*.json              �?
-   �?  ├─ Deduplication (2 levels):      �?
-   �?  �?  1. URL exact match            �?
-   �?  �?  2. Fuzzy hash (company+title) �?
-   �?  ├─ Source priority handling       �?
-   �?  �?  (ATS=1 > Visual=2 > Other=3)  �?
-   �?  └─ Imports to SQLite              �?
-   �?                                    �?
-   �?Result: 150 scraped �?120 unique    �?
-   └─────────────────────────────────────�?
-                  �?
+   ┌─────────────────────────────────────┐
+   │ User: "Done scraping"               │
+   │                                     │
+   │ Claude → MCP Tool:                  │
+   │   import_antigravity_results()      │
+   │   ├─ Scans data/*.json              │
+   │   ├─ Deduplication (2 levels):      │
+   │   │   1. URL exact match            │
+   │   │   2. Fuzzy hash (company+title) │
+   │   ├─ Source priority handling       │
+   │   │   (ATS=1 > Visual=2 > Other=3)  │
+   │   └─ Imports to SQLite              │
+   │                                     │
+   │ Result: 150 scraped → 120 unique    │
+   └─────────────────────────────────────┘
+                  ↓
 3. AUTOMATED: AI Filtering
-   ┌─────────────────────────────────────�?
-   �?Claude �?MCP Tool:                  �?
-   �?  process_jobs_with_glm_tool()      �?
-   �?  ├─ Loads config/achievements.md   �?
-   �?  ├─ Loads config/preferences.md    �?
-   �?  └─ For each unprocessed job:      �?
-   �?      ├─ GLM scores 0-100           �?
-   �?      └─ Three-tier routing:        �?
-   �?          ├─ �?5: Tier 1 HIGH       �?
-   �?          ├─ 60-84: Tier 2 MEDIUM   �?
-   �?          └─ <60: Tier 3 LOW        �?
-   �?                                    �?
-   �?Tier 1 (8 jobs):                    �?
-   �?  �?Auto-generate PDF resumes       �?
-   �?  �?Status: matched (auto)          �?
-   �?                                    �?
-   �?Tier 2 (18 jobs):                   �?
-   �?  �?Add to campaign report          �?
-   �?  �?Status: matched (manual)        �?
-   �?                                    �?
-   �?Tier 3 (94 jobs):                   �?
-   �?  �?Archive, no action              �?
-   �?  �?Status: rejected                �?
-   �?                                    �?
-   �?Cost: ~$0.03 for 120 jobs           �?
-   └─────────────────────────────────────�?
-                  �?
+   ┌─────────────────────────────────────┐
+   │ Claude → MCP Tool:                  │
+   │   process_jobs_with_glm_tool()      │
+   │   ├─ Loads config/achievements.md   │
+   │   ├─ Loads config/preferences.md    │
+   │   └─ For each unprocessed job:      │
+   │       ├─ GLM scores 0-100           │
+   │       └─ Three-tier routing:        │
+   │           ├─ ≥85: Tier 1 HIGH       │
+   │           ├─ 60-84: Tier 2 MEDIUM   │
+   │           └─ <60: Tier 3 LOW        │
+   │                                     │
+   │ Tier 1 (8 jobs):                    │
+   │   → Auto-generate PDF resumes       │
+   │   → Status: matched (auto)          │
+   │                                     │
+   │ Tier 2 (18 jobs):                   │
+   │   → Add to campaign report          │
+   │   → Status: matched (manual)        │
+   │                                     │
+   │ Tier 3 (94 jobs):                   │
+   │   → Archive, no action              │
+   │   → Status: rejected                │
+   │                                     │
+   │ Cost: ~$0.03 for 120 jobs           │
+   └─────────────────────────────────────┘
+                  ↓
 4. EVENING: Review & Apply
-   ┌─────────────────────────────────────�?
-   �?Claude: "Report ready"              �?
-   �?  �?8 HIGH matches (resumes ready)  �?
-   �?  �?18 MEDIUM matches (need review) �?
-   �?                                    �?
-   �?User: Reviews, approves some        �?
-   �?                                    �?
-   �?Claude �?Generate application       �?
-   �?         instructions (Task 8)      �?
-   �?                                    �?
-   �?User: [Runs Antigravity to apply]   �?
-   �?  �?Auto-fills forms                �?
-   �?  �?Pauses at Submit button         �?
-   └─────────────────────────────────────�?
+   ┌─────────────────────────────────────┐
+   │ Claude: "Report ready"              │
+   │   → 8 HIGH matches (resumes ready)  │
+   │   → 18 MEDIUM matches (need review) │
+   │                                     │
+   │ User: Reviews, approves some        │
+   │                                     │
+   │ Claude → Generate application       │
+   │          instructions (Task 8)      │
+   │                                     │
+   │ User: [Runs Antigravity to apply]   │
+   │   → Auto-fills forms                │
+   │   → Pauses at Submit button         │
+   └─────────────────────────────────────┘
 ```
 
 ### Three-Tier Scoring System
 
 ```
                     GLM Filtering (0-100 score)
-                              �?
-        ┌─────────────────────┼─────────────────────�?
-        �?                    �?                    �?
-        �?                    �?                    �?
-   Score �?85            60 �?Score < 85        Score < 60
-        �?                    �?                    �?
-        �?                    �?                    �?
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        │                     │                     │
+        ▼                     ▼                     ▼
+   Score ≥ 85            60 ≤ Score < 85        Score < 60
+        │                     │                     │
+        ▼                     ▼                     ▼
    TIER 1: HIGH          TIER 2: MEDIUM        TIER 3: LOW
-        �?                    �?                    �?
-        �?                    �?                    �?
+        │                     │                     │
+        ▼                     ▼                     ▼
   Auto-generate        Add to campaign         Auto-archive
   PDF resume           report for review       (no action)
-        �?                    �?
-        �?                    �?
+        │                     │
+        ▼                     ▼
   status='matched'      status='matched'
   decision='auto'       decision='manual'
-        �?                    �?
-        └─────────┬───────────�?
-                  �?
+        │                     │
+        └─────────┬───────────┘
+                  ▼
            Ready to Apply
 ```
 
@@ -218,90 +218,90 @@ Claude Code CLI acts as a **project manager** that:
 ```
 JobHunterAI/
 ├── src/
-�?  ├── agents/                   # Instruction Generators [NEW]
-�?  �?  ├── __init__.py
-�?  �?  ├── instruction_generator.py      # Task 3: Antigravity scraping guide
-�?  �?  ├── platform_configs.py           # Platform-specific templates
-�?  �?  └── application_guide_generator.py [PLANNED - Task 8]
-�?  �?
-�?  ├── mcp_server/              # MCP Server (Claude Code integration)
-�?  �?  ├── __init__.py
-�?  �?  ├── server.py            # Main MCP server entry
-�?  �?  └── tools/               # MCP Tool implementations
-�?  �?      ├── __init__.py
-�?  �?      ├── antigravity.py   # Task 3: generate_antigravity_scraping_guide
-�?  �?      ├── importer.py      # Task 4: import_antigravity_results
-�?  �?      ├── gl_processor.py  # Task 5: process_jobs_with_glm_tool
-�?  �?      ├── ats_scanner.py   [PLANNED - Task 6]
-�?  �?      └── report.py        [PLANNED - Task 7]
-�?  �?
-�?  ├── core/                    # Core business logic
-�?  �?  ├── __init__.py
-�?  �?  ├── database.py          # SQLite with source tracking [UPDATED]
-�?  �?  ├── importer.py          # Task 4: JSON �?DB with dedup [NEW]
-�?  �?  ├── gl_processor.py      # Task 5: GLM filtering engine [NEW]
-�?  �?  ├── pdf_generator.py     # Resume PDF generation
-�?  �?  └── llm/
-�?  �?      ├── __init__.py
-�?  �?      ├── glm_client.py    # GLM API client
-�?  �?      └── claude_client.py # Claude API client
-�?  �?
-�?  ├── scrapers/                # [DEPRECATED - Use Antigravity]
-�?  �?  ├── __init__.py
-�?  �?  ├── base.py
-�?  �?  └── linkedin.py          # Only LinkedIn works
-�?  �?
-�?  ├── output/                  # Output generators
-�?  �?  └── report_generator.py  [PLANNED - Task 7]
-�?  �?
-�?  └── utils/
-�?      ├── __init__.py
-�?      ├── config.py            # Configuration loader
-�?      ├── markdown_parser.py   # Parse config/*.md
-�?      └── logger.py            # Logging setup
-�?
+│   ├── agents/                   # Instruction Generators [NEW]
+│   │   ├── __init__.py
+│   │   ├── instruction_generator.py      # Task 3: Antigravity scraping guide
+│   │   ├── platform_configs.py           # Platform-specific templates
+│   │   └── application_guide_generator.py [PLANNED - Task 8]
+│   │
+│   ├── mcp_server/              # MCP Server (Claude Code integration)
+│   │   ├── __init__.py
+│   │   ├── server.py            # Main MCP server entry
+│   │   └── tools/               # MCP Tool implementations
+│   │       ├── __init__.py
+│   │       ├── antigravity.py   # Task 3: generate_antigravity_scraping_guide
+│   │       ├── importer.py      # Task 4: import_antigravity_results
+│   │       ├── gl_processor.py  # Task 5: process_jobs_with_glm_tool
+│   │       ├── ats_scanner.py   [PLANNED - Task 6]
+│   │       └── report.py        [PLANNED - Task 7]
+│   │
+│   ├── core/                    # Core business logic
+│   │   ├── __init__.py
+│   │   ├── database.py          # SQLite with source tracking [UPDATED]
+│   │   ├── importer.py          # Task 4: JSON → DB with dedup [NEW]
+│   │   ├── gl_processor.py      # Task 5: GLM filtering engine [NEW]
+│   │   ├── pdf_generator.py     # Resume PDF generation
+│   │   └── llm/
+│   │       ├── __init__.py
+│   │       ├── glm_client.py    # GLM API client
+│   │       └── claude_client.py # Claude API client
+│   │
+│   ├── scrapers/                # [DEPRECATED - Use Antigravity]
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   └── linkedin.py          # Only LinkedIn works
+│   │
+│   ├── output/                  # Output generators
+│   │   └── report_generator.py  [PLANNED - Task 7]
+│   │
+│   └── utils/
+│       ├── __init__.py
+│       ├── config.py            # Configuration loader
+│       ├── markdown_parser.py   # Parse config/*.md
+│       └── logger.py            # Logging setup
+│
 ├── config/                      # User configuration (Markdown) [GITIGNORED]
-�?  ├── resume.md                # Resume content
-�?  ├── preferences.md           # Job criteria (24 titles, filters)
-�?  ├── achievements.md          # Career highlights
-�?  └── credentials.md           # Platform logins
-�?
+│   ├── resume.md                # Resume content
+│   ├── preferences.md           # Job criteria (24 titles, filters)
+│   ├── achievements.md          # Career highlights
+│   └── credentials.md           # Platform logins
+│
 ├── instructions/                # Generated Antigravity guides [NEW]
-�?  └── scrape_jobs_YYYY-MM-DD.json
-�?
+│   └── scrape_jobs_YYYY-MM-DD.json
+│
 ├── campaigns/                   # Daily campaign reports [NEW]
-�?  └── campaign_YYYY-MM-DD.md   [PLANNED - Task 7]
-�?
+│   └── campaign_YYYY-MM-DD.md   [PLANNED - Task 7]
+│
 ├── data/                        # Runtime data [GITIGNORED]
-�?  ├── jobs.db                  # SQLite database
-�?  ├── linkedin_2026-01-29.json # Scraped data from Antigravity
-�?  ├── glassdoor_2026-01-29.json
-�?  └── ...
-�?
+│   ├── jobs.db                  # SQLite database
+│   ├── linkedin_2026-01-29.json # Scraped data from Antigravity
+│   ├── glassdoor_2026-01-29.json
+│   └── ...
+│
 ├── output/                      # Generated resumes [GITIGNORED]
-�?  ├── Scribd_AI_Engineer.pdf
-�?  └── ...
-�?
+│   ├── Scribd_AI_Engineer.pdf
+│   └── ...
+│
 ├── templates/                   # HTML templates
-�?  └── resume/
-�?      └── modern.html          # Resume template
-�?
+│   └── resume/
+│       └── modern.html          # Resume template
+│
 ├── archive/                     # Archived/deprecated code
-�?  └── old_scrapers/            # Deprecated Playwright scrapers
-�?
+│   └── old_scrapers/            # Deprecated Playwright scrapers
+│
 ├── docs/                        # Documentation
-�?  ├── ARCHITECTURE.md          # This file
-�?  ├── DEVELOPMENT_GUIDE.md     # Technical guide for sub-agents
-�?  └── CLEANUP_AND_GUIDE_SUMMARY.md
-�?
+│   ├── ARCHITECTURE.md          # This file
+│   ├── DEVELOPMENT_GUIDE.md     # Technical guide for sub-agents
+│   └── CLEANUP_AND_GUIDE_SUMMARY.md
+│
 ├── scripts/                     # Utility scripts
-�?  ├── migrate_add_source_tracking.py
-�?  └── migrate_add_fuzzy_hash.py
-�?
+│   ├── migrate_add_source_tracking.py
+│   └── migrate_add_fuzzy_hash.py
+│
 ├── tests/
-�?  ├── unit/
-�?  └── integration/
-�?
+│   ├── unit/
+│   └── integration/
+│
 ├── .env                         # API keys [GITIGNORED]
 ├── .env.example                 # Environment template
 ├── .gitignore
@@ -314,14 +314,14 @@ JobHunterAI/
 
 | Component | Technology | Purpose | Status |
 |-----------|------------|---------|--------|
-| **Orchestrator** | Claude Code CLI | Project manager, workflow control | �?Active |
-| **Tool Interface** | MCP Server (Python) | Expose tools to Claude | �?Active |
-| **Visual Agent** | Antigravity | Browser scraping, form filling | �?Active |
-| **Filtering LLM** | GLM API (智谱AI) | Cost-effective job filtering | �?Active |
-| **Resume LLM** | Claude API (Anthropic) | High-quality resume tailoring | �?Active |
-| **Database** | SQLite (WAL mode) | Local job storage | �?Active |
-| **PDF Generator** | WeasyPrint | Resume PDF generation | �?Active |
-| **Config Format** | Markdown | Human-readable configuration | �?Active |
+| **Orchestrator** | Claude Code CLI | Project manager, workflow control | ✅ Active |
+| **Tool Interface** | MCP Server (Python) | Expose tools to Claude | ✅ Active |
+| **Visual Agent** | Antigravity | Browser scraping, form filling | ✅ Active |
+| **Filtering LLM** | GLM API (智谱AI) | Cost-effective job filtering | ✅ Active |
+| **Resume LLM** | Claude API (Anthropic) | High-quality resume tailoring | ✅ Active |
+| **Database** | SQLite (WAL mode) | Local job storage | ✅ Active |
+| **PDF Generator** | WeasyPrint | Resume PDF generation | ✅ Active |
+| **Config Format** | Markdown | Human-readable configuration | ✅ Active |
 | **Browser (deprecated)** | Playwright | Old scraping method | ⚠️ LinkedIn only |
 
 ## Database Schema
@@ -453,9 +453,9 @@ async def process_jobs_with_glm_tool(
     - GLM scores each job 0-100
 
     Routing:
-    - Score �?5: Tier 1 HIGH �?Auto-generate resume
-    - 60�?Score <85: Tier 2 MEDIUM �?Add to campaign report
-    - Score <60: Tier 3 LOW �?Archive
+    - Score ≥85: Tier 1 HIGH → Auto-generate resume
+    - 60≤ Score <85: Tier 2 MEDIUM → Add to campaign report
+    - Score <60: Tier 3 LOW → Archive
 
     Returns:
         {
@@ -544,15 +544,15 @@ async def generate_application_instructions(
 
 ### 3. Why Three-Tier Scoring?
 
-**Tier 1 (�?5):** High confidence �?Auto-generate resume
+**Tier 1 (≥85):** High confidence → Auto-generate resume
 - Saves user time on obvious matches
 - Still requires manual submit
 
-**Tier 2 (60-84):** Medium confidence �?User review
+**Tier 2 (60-84):** Medium confidence → User review
 - Edge cases need human judgment
 - Example: Great match but contract role
 
-**Tier 3 (<60):** Low match �?Archive
+**Tier 3 (<60):** Low match → Archive
 - Keeps database clean
 - User can still review if curious
 
@@ -603,13 +603,13 @@ async def generate_application_instructions(
 
 ## Current Implementation Status
 
-### �?Phase 1: Foundation (Tasks 1-2)
+### ✅ Phase 1: Foundation (Tasks 1-2)
 - [x] Database schema with source tracking
 - [x] Fuzzy hash deduplication
 - [x] Migration scripts
 - [x] Archive old scrapers
 
-### �?Phase 2: Core Features (Tasks 3-5) - 62.5% Complete
+### ✅ Phase 2: Core Features (Tasks 3-5) - 62.5% Complete
 - [x] Task 3: Antigravity instruction generator
   - Reads preferences.md (24 job titles)
   - Reads credentials.md (auto-login)

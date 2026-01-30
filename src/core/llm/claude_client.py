@@ -18,28 +18,10 @@ from tenacity import (
     retry_if_exception_type
 )
 
-from .base import BaseLLMClient, LLMResponse, RateLimitError, APIError, InvalidResponseError
+from .base import BaseLLMClient, LLMResponse, RateLimitError, APIError, InvalidResponseError, TailoredResume
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
-
-
-@dataclass
-class TailoredResume:
-    """Tailored resume result from Claude.
-    
-    Attributes:
-        summary: Customized professional summary (2-3 sentences)
-        selected_achievements: List of 3-5 most relevant achievements with tailored bullets
-        highlighted_skills: List of 8-12 skills most relevant to job
-        tailoring_notes: Brief explanation of customizations made
-        cost_usd: Cost of this API call
-    """
-    summary: str
-    selected_achievements: List[Dict]
-    highlighted_skills: List[str]
-    tailoring_notes: str
-    cost_usd: float = 0.0
 
 
 class ClaudeClient(BaseLLMClient):

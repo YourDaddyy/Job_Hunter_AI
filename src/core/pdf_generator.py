@@ -6,10 +6,15 @@ which converts HTML/CSS to high-quality PDFs suitable for job applications.
 
 import os
 
-# Add GTK to PATH for WeasyPrint on Windows
+# Add GTK to DLL search path for WeasyPrint on Windows (Python 3.8+)
 gtk_path = r'W:\Code Soft\GTK3-Runtime Win64\bin'
-if os.path.exists(gtk_path) and gtk_path not in os.environ.get('PATH', ''):
-    os.environ['PATH'] = gtk_path + os.pathsep + os.environ.get('PATH', '')
+if os.path.exists(gtk_path):
+    # Required for Python 3.8+ on Windows
+    if hasattr(os, 'add_dll_directory'):
+        os.add_dll_directory(gtk_path)
+    # Also add to PATH for backwards compatibility
+    if gtk_path not in os.environ.get('PATH', ''):
+        os.environ['PATH'] = gtk_path + os.pathsep + os.environ.get('PATH', '')
 
 from pathlib import Path
 from typing import Dict, Any, Optional

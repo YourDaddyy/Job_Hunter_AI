@@ -10,6 +10,24 @@ from typing import List, Dict, Any, Optional
 
 
 @dataclass
+class TailoredResume:
+    """Tailored resume result from LLM.
+
+    Attributes:
+        summary: Customized professional summary (2-3 sentences)
+        selected_achievements: List of 3-5 most relevant achievements with tailored bullets
+        highlighted_skills: List of 8-12 skills most relevant to job
+        tailoring_notes: Brief explanation of customizations made
+        cost_usd: Cost of this API call
+    """
+    summary: str
+    selected_achievements: List[Dict]
+    highlighted_skills: List[str]
+    tailoring_notes: str
+    cost_usd: float = 0.0
+
+
+@dataclass
 class LLMResponse:
     """Standard LLM response structure.
     

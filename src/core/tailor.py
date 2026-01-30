@@ -11,7 +11,7 @@ from typing import List, Dict, Optional
 from pathlib import Path
 
 from src.core.database import Database, Job
-from src.core.llm import ClaudeClient, TailoredResume
+from src.core.llm import GLMClient, TailoredResume
 from src.core.pdf_generator import PDFGenerator
 from src.utils.config import ConfigLoader, Resume, Achievements
 from src.utils.logger import get_logger
@@ -59,22 +59,22 @@ class ResumeTailoringService:
     def __init__(
         self,
         db: Optional[Database] = None,
-        claude_client: Optional[ClaudeClient] = None,
+        llm_client: Optional[GLMClient] = None,
         pdf_generator: Optional[PDFGenerator] = None,
         config: Optional[ConfigLoader] = None,
-        output_dir: str = "data/resumes"
+        output_dir: str = "output"
     ):
         """Initialize tailoring service.
-        
+
         Args:
             db: Database instance (defaults to new Database())
-            claude_client: Claude client (defaults to new ClaudeClient())
+            llm_client: LLM client for tailoring (defaults to GLMClient)
             pdf_generator: PDF generator (defaults to new PDFGenerator())
             config: Config loader (defaults to new ConfigLoader())
             output_dir: Directory to save PDF resumes
         """
         self.db = db or Database()
-        self.claude = claude_client or ClaudeClient()
+        self.llm = llm_client or GLMClient()
         self.pdf = pdf_generator or PDFGenerator()
         self.config = config or ConfigLoader()
         self.output_dir = Path(output_dir)
@@ -115,9 +115,9 @@ class ResumeTailoringService:
         resume_md = self._format_resume_markdown(resume)
         achievements_md = self._format_achievements_markdown(achievements)
         
-        # Call Claude to generate tailored content
+        # Call LLM to generate tailored content
         try:
-            tailored = await self.claude.tailor_resume(
+            tailored = await self.llm.tailor_resume(
                 resume_markdown=resume_md,
                 achievements_markdown=achievements_md,
                 job_title=job.title,
@@ -126,7 +126,7 @@ class ResumeTailoringService:
                 key_requirements=job.key_requirements or []
             )
         except Exception as e:
-            logger.error(f"Claude tailor_resume failed for job {job_id}: {e}")
+            logger.error(f"LLM tailor_resume failed for job {job_id}: {e}")
             raise
         
         # Build resume data for template
@@ -343,12 +343,8 @@ class ResumeTailoringService:
         
         for achievement in achievements.items:
             lines.append(f"## {achievement.name}")
-            if achievement.company:
-                lines.append(f"**Company:** {achievement.company}")
-            if achievement.period:
-                lines.append(f"**Period:** {achievement.period}")
             if achievement.category:
-                lines.append(f"**Category:** {achievement.category}")
+                lines.append(f"**Category:** {', '.join(achievement.category) if isinstance(achievement.category, list) else achievement.category}")
             if achievement.keywords:
                 lines.append(f"**Keywords:** {', '.join(achievement.keywords)}")
             if achievement.bullets:

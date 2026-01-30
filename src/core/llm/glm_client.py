@@ -17,7 +17,7 @@ from tenacity import (
     retry_if_exception_type
 )
 
-from .base import BaseLLMClient, LLMResponse, RateLimitError, APIError, InvalidResponseError
+from .base import BaseLLMClient, LLMResponse, RateLimitError, APIError, InvalidResponseError, TailoredResume
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -223,6 +223,115 @@ class GLMClient(BaseLLMClient):
             salary_compatible=data.get("salary_compatible", True),
             cost_usd=response.cost_usd
         )
+
+    async def tailor_resume(
+        self,
+        resume_markdown: str,
+        achievements_markdown: str,
+        job_title: str,
+        job_company: str,
+        job_jd: str,
+        key_requirements: List[str]
+    ) -> TailoredResume:
+        """Tailor resume for a specific job using GLM.
+
+        Args:
+            resume_markdown: Base resume in markdown format
+            achievements_markdown: Achievement pool in markdown format
+            job_title: Target job title
+            job_company: Target company name
+            job_jd: Job description markdown
+            key_requirements: List of key requirements from filtering
+
+        Returns:
+            TailoredResume with customized content
+        """
+        prompt = self._build_tailor_prompt(
+            resume_markdown,
+            achievements_markdown,
+            job_title,
+            job_company,
+            job_jd,
+            key_requirements
+        )
+
+        messages = [{"role": "user", "content": prompt}]
+
+        try:
+            response = await self.chat(messages, temperature=0.5, max_tokens=1500)
+        except Exception as e:
+            logger.error(f"GLM tailor_resume request failed: {e}")
+            raise
+
+        # Parse JSON response
+        try:
+            data = self._parse_json_response(response.content)
+        except Exception as e:
+            logger.error(f"Failed to parse GLM response: {response.content[:200]}")
+            raise InvalidResponseError(f"Invalid JSON response: {e}") from e
+
+        return TailoredResume(
+            summary=data.get("summary", ""),
+            selected_achievements=data.get("selected_achievements", []),
+            highlighted_skills=data.get("highlighted_skills", []),
+            tailoring_notes=data.get("tailoring_notes", ""),
+            cost_usd=response.cost_usd
+        )
+
+    def _build_tailor_prompt(
+        self,
+        resume_markdown: str,
+        achievements_markdown: str,
+        job_title: str,
+        job_company: str,
+        job_jd: str,
+        key_requirements: List[str]
+    ) -> str:
+        """Build resume tailoring prompt for GLM."""
+        requirements_list = "\n".join(f"- {req}" for req in key_requirements) if key_requirements else "- Not specified"
+
+        return f"""You are an expert resume writer. Tailor this resume for the job.
+
+## Target Job
+Title: {job_title}
+Company: {job_company}
+
+Key Requirements:
+{requirements_list}
+
+## Job Description
+{job_jd}
+
+---
+
+## Base Resume
+{resume_markdown}
+
+---
+
+## Achievement Pool
+{achievements_markdown}
+
+---
+
+## Instructions
+
+1. **Summary**: Write a 2-3 sentence professional summary tailored to this role.
+2. **Achievements**: Select 3-5 most relevant achievements. Tailor bullets to match job keywords.
+3. **Skills**: List 8-12 skills most relevant to this role.
+
+Return ONLY valid JSON:
+{{
+  "summary": "Tailored professional summary",
+  "selected_achievements": [
+    {{
+      "name": "achievement name",
+      "bullets": ["Tailored bullet 1", "Tailored bullet 2"]
+    }}
+  ],
+  "highlighted_skills": ["skill1", "skill2"],
+  "tailoring_notes": "Brief explanation of customizations"
+}}"""
 
     def _build_filter_prompt(
         self,

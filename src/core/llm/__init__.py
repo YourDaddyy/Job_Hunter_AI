@@ -5,9 +5,9 @@ This package provides clients for different LLM providers:
 - Claude: High-quality resume tailoring (to be implemented)
 """
 
-from .base import BaseLLMClient, LLMResponse, LLMError, RateLimitError, APIError, InvalidResponseError
+from .base import BaseLLMClient, LLMResponse, LLMError, RateLimitError, APIError, InvalidResponseError, TailoredResume
 from .glm_client import GLMClient, FilterResult
-from .claude_client import ClaudeClient, TailoredResume
+from .claude_client import ClaudeClient
 
 __all__ = [
     "BaseLLMClient",
