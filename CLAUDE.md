@@ -45,13 +45,13 @@ cd "." && python -m src.agents.instruction_generator
 ```
 Scraping instructions generated!
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━�?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━�?
 COPY THIS TO ANTIGRAVITY:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━�?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━�?
 /turbo-all Run job search using W:\Code\job_viewer\instructions\scrape_jobs_YYYY-MM-DD.json
 
 Log into LinkedIn, Indeed, Wellfound, Glassdoor and search for AI/ML/SDET roles (24 job titles). Filter for Remote/Canada. Save results to W:\Code\job_viewer\data\ as JSON files.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━�?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━�?
 
 Estimated time: 5-10 minutes
 
@@ -69,8 +69,8 @@ User will either:
 
 ```bash
 cd "." && python -c "
-from src.core.importer import JobImporter
-importer = JobImporter()
+from src.core.importer import AntigravityImporter
+importer = AntigravityImporter()
 result = importer.import_from_directory('data/')
 print(f'Imported: {result}')
 "
@@ -78,14 +78,14 @@ print(f'Imported: {result}')
 
 **Alternative - ATS Scanner (no browser needed):**
 ```bash
-cd "." && python -m src.core.ats_scanner
+cd "." && python -m src.scrapers.ats_scanner
 ```
 
 ### Step 4: Filter with AI (GLM)
 
 ```bash
 cd "." && python -c "
-from src.core.glm_processor import GLMProcessor
+from src.core.gl_processor import GLMProcessor
 processor = GLMProcessor()
 result = processor.process_unscored_jobs()
 print(f'Processed: {result}')
@@ -101,10 +101,10 @@ print(f'Processed: {result}')
 
 ```bash
 cd "." && python -c "
-from src.core.report_generator import ReportGenerator
-gen = ReportGenerator()
-report_path = gen.generate_daily_report()
-print(f'Report: {report_path}')
+from src.output.report_generator import CampaignReportGenerator
+gen = CampaignReportGenerator()
+result = gen.generate_report()
+print(f'Report: {result}')
 "
 ```
 
@@ -194,8 +194,10 @@ c.execute("""
 ## Cost Estimates
 
 - GLM filtering: ~$0.001/job
-- Resume generation: ~$0.02/resume (requires ANTHROPIC_API_KEY)
-- Typical daily run: ~$0.20-0.30
+- Resume generation: ~$0.003/resume (default: GLM, configurable in `config/llm_providers.md`)
+- Typical daily run: ~$0.15-0.20
+
+**LLM Providers:** Configure in `config/llm_providers.md` - supports GLM, OpenAI, Gemini, Claude, OpenRouter
 
 ## MCP Server
 

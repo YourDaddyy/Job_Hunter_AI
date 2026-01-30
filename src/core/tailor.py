@@ -11,7 +11,7 @@ from typing import List, Dict, Optional
 from pathlib import Path
 
 from src.core.database import Database, Job
-from src.core.llm import GLMClient, TailoredResume
+from src.core.llm import LLMFactory, BaseLLMClient, TailoredResume
 from src.core.pdf_generator import PDFGenerator
 from src.utils.config import ConfigLoader, Resume, Achievements
 from src.utils.logger import get_logger
@@ -59,7 +59,7 @@ class ResumeTailoringService:
     def __init__(
         self,
         db: Optional[Database] = None,
-        llm_client: Optional[GLMClient] = None,
+        llm_client: Optional[BaseLLMClient] = None,
         pdf_generator: Optional[PDFGenerator] = None,
         config: Optional[ConfigLoader] = None,
         output_dir: str = "output"
@@ -68,15 +68,15 @@ class ResumeTailoringService:
 
         Args:
             db: Database instance (defaults to new Database())
-            llm_client: LLM client for tailoring (defaults to GLMClient)
+            llm_client: LLM client for tailoring (defaults to configured 'tailor' provider)
             pdf_generator: PDF generator (defaults to new PDFGenerator())
             config: Config loader (defaults to new ConfigLoader())
             output_dir: Directory to save PDF resumes
         """
-        self.db = db or Database()
-        self.llm = llm_client or GLMClient()
-        self.pdf = pdf_generator or PDFGenerator()
         self.config = config or ConfigLoader()
+        self.db = db or Database()
+        self.llm = llm_client or LLMFactory.create_client("tailor", self.config)
+        self.pdf = pdf_generator or PDFGenerator()
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         

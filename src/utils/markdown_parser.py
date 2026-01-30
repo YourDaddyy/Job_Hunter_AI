@@ -170,6 +170,35 @@ class Credentials:
         return self.apis.get(service.lower())
 
 
+# LLM-related dataclasses
+@dataclass
+class LLMConfig:
+    """Configuration for a specific LLM provider usage."""
+    provider: str
+    model: str
+    purpose: str
+
+
+@dataclass
+class ProviderInfo:
+    """Information about an available provider."""
+    name: str
+    env_var: str
+    models: List[str]
+    notes: str = ""
+
+
+@dataclass
+class LLMProviders:
+    """LLM provider configuration."""
+    active: Dict[str, LLMConfig]  # purpose -> config
+    available: Dict[str, ProviderInfo]  # provider_name -> info
+
+    def get_config(self, purpose: str) -> Optional[LLMConfig]:
+        """Get config for a specific purpose."""
+        return self.active.get(purpose.lower())
+
+
 class MarkdownParser:
     """Parse structured markdown config files."""
 
@@ -647,3 +676,50 @@ class MarkdownParser:
                 key, value = line.split(':', 1)
                 result[key.strip()] = value.strip()
         return result
+
+    def parse_llm_providers(self, content: str) -> LLMProviders:
+        """Parse llm_providers.md into LLMProviders dataclass."""
+        sections = self._split_sections(content)
+
+        # Parse Active Providers
+        active = {}
+        active_section = sections.get("Active Providers", "")
+        active_subsections = self._split_subsections(active_section)
+
+        for purpose_name, config_text in active_subsections.items():
+            data = self._parse_key_value_list(config_text)
+            
+            # Map section name to purpose key (e.g., "Filtering Provider" -> "filter")
+            purpose_key = "filter" if "filtering" in purpose_name.lower() else "tailor"
+            if "resume" in purpose_name.lower():
+                purpose_key = "tailor"
+                
+            active[purpose_key] = LLMConfig(
+                provider=data.get("Provider", "").lower(),
+                model=data.get("Model", ""),
+                purpose=data.get("Purpose", "")
+            )
+
+        # Parse Available Providers
+        available = {}
+        avail_section = sections.get("Available Providers", "")
+        avail_subsections = self._split_subsections(avail_section)
+
+        for provider_name, info_text in avail_subsections.items():
+            data = self._parse_key_value_list(info_text)
+            
+            # Parse models list
+            models_str = data.get("Models", "")
+            models = [m.strip() for m in models_str.split(",")] if models_str else []
+
+            # Clean provider name (remove parens like "GLM (智谱AI)")
+            clean_name = provider_name.split("(")[0].strip().lower()
+
+            available[clean_name] = ProviderInfo(
+                name=clean_name,
+                env_var=data.get("API Key Env", ""),
+                models=models,
+                notes=data.get("Notes", "")
+            )
+
+        return LLMProviders(active=active, available=available)

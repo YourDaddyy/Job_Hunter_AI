@@ -21,7 +21,7 @@ from datetime import datetime
 from pathlib import Path
 
 from src.core.database import Database, Job
-from src.core.llm import GLMClient, ClaudeClient
+from src.core.llm import LLMFactory, BaseLLMClient
 from src.core.tailor import ResumeTailoringService
 from src.utils.config import ConfigLoader
 from src.utils.logger import get_logger
@@ -84,8 +84,8 @@ class GLMProcessor:
     def __init__(
         self,
         db: Optional[Database] = None,
-        glm_client: Optional[GLMClient] = None,
-        claude_client: Optional[ClaudeClient] = None,
+        filter_client: Optional[BaseLLMClient] = None,
+        tailor_client: Optional[BaseLLMClient] = None,
         tailor_service: Optional[ResumeTailoringService] = None,
         config: Optional[ConfigLoader] = None
     ):
@@ -93,20 +93,23 @@ class GLMProcessor:
 
         Args:
             db: Database instance
-            glm_client: GLM client for scoring
-            claude_client: Claude client for resume generation
+            filter_client: LLM client for filtering (defaults key "filter")
+            tailor_client: LLM client for tailoring (defaults key "tailor")
             tailor_service: Resume tailoring service
             config: Config loader
         """
+        self.config = config or ConfigLoader()
         self.db = db or Database()
-        self.glm = glm_client or GLMClient()
-        self.claude = claude_client or ClaudeClient()
+        
+        # Use Factory to get clients if not provided
+        self.glm = filter_client or LLMFactory.create_client("filter", self.config)
+        self.claude = tailor_client or LLMFactory.create_client("tailor", self.config)
+        
         self.tailor = tailor_service or ResumeTailoringService(
             db=self.db,
-            claude_client=self.claude,
-            config=config
+            llm_client=self.claude,
+            config=self.config
         )
-        self.config = config or ConfigLoader()
 
         logger.info("GLMProcessor initialized")
 
@@ -314,7 +317,8 @@ class GLMProcessor:
         response = await self.glm.chat(messages, temperature=0.3, max_tokens=800)
 
         # Parse JSON response
-        data = self.glm._parse_json_response(response.content)
+        # Parse JSON response
+        data = self.glm.parse_json_response(response.content)
 
         score = int(data.get("score", 0))
         reasoning = data.get("reasoning", "No reasoning provided")

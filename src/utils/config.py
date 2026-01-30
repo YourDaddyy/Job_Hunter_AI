@@ -10,6 +10,8 @@ from .markdown_parser import (
     Preferences,
     Achievements,
     Credentials,
+    LLMProviders,
+    LLMConfig,
 )
 
 
@@ -135,12 +137,38 @@ class ConfigLoader:
         except Exception as e:
             raise ConfigParseError(f"Failed to parse credentials: {e}") from e
 
+    @lru_cache(maxsize=1)
+    def get_llm_providers(self) -> LLMProviders:
+        """Load and parse llm_providers.md.
+
+        Returns:
+            LLMProviders dataclass instance
+        """
+        path = self.config_dir / "llm_providers.md"
+        # If file doesn't exist, return default (implemented in factory)
+        if not path.exists():
+             # Basic default fallback
+             return LLMProviders(
+                 active={
+                     "filter": LLMConfig("glm", "glm-4-flash", "filter"),
+                     "tailor": LLMConfig("glm", "glm-4-flash", "tailor")
+                 },
+                 available={}
+             )
+
+        try:
+            content = path.read_text(encoding="utf-8")
+            return self.parser.parse_llm_providers(content)
+        except Exception as e:
+            raise ConfigParseError(f"Failed to parse llm_providers: {e}") from e
+
     def reload(self):
         """Clear cache and reload all configs."""
         self.get_resume.cache_clear()
         self.get_preferences.cache_clear()
         self.get_achievements.cache_clear()
         self.get_credentials.cache_clear()
+        self.get_llm_providers.cache_clear()
 
     def validate(self) -> List[str]:
         """Validate all config files.
