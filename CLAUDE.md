@@ -35,7 +35,7 @@ conn.close()
 ### Step 1: Generate Scraping Instructions
 
 ```bash
-cd "W:/Code/job_viewer" && python -m src.agents.instruction_generator
+cd "." && python -m src.agents.instruction_generator
 ```
 
 **Output:** Creates `instructions/scrape_jobs_YYYY-MM-DD.json`
@@ -45,13 +45,13 @@ cd "W:/Code/job_viewer" && python -m src.agents.instruction_generator
 ```
 Scraping instructions generated!
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━�?
 COPY THIS TO ANTIGRAVITY:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━�?
 /turbo-all Run job search using W:\Code\job_viewer\instructions\scrape_jobs_YYYY-MM-DD.json
 
 Log into LinkedIn, Indeed, Wellfound, Glassdoor and search for AI/ML/SDET roles (24 job titles). Filter for Remote/Canada. Save results to W:\Code\job_viewer\data\ as JSON files.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━�?
 
 Estimated time: 5-10 minutes
 
@@ -68,7 +68,7 @@ User will either:
 ### Step 3: Import Scraped Data
 
 ```bash
-cd "W:/Code/job_viewer" && python -c "
+cd "." && python -c "
 from src.core.importer import JobImporter
 importer = JobImporter()
 result = importer.import_from_directory('data/')
@@ -78,13 +78,13 @@ print(f'Imported: {result}')
 
 **Alternative - ATS Scanner (no browser needed):**
 ```bash
-cd "W:/Code/job_viewer" && python -m src.core.ats_scanner
+cd "." && python -m src.core.ats_scanner
 ```
 
 ### Step 4: Filter with AI (GLM)
 
 ```bash
-cd "W:/Code/job_viewer" && python -c "
+cd "." && python -c "
 from src.core.glm_processor import GLMProcessor
 processor = GLMProcessor()
 result = processor.process_unscored_jobs()
@@ -100,7 +100,7 @@ print(f'Processed: {result}')
 ### Step 5: Generate Campaign Report
 
 ```bash
-cd "W:/Code/job_viewer" && python -c "
+cd "." && python -c "
 from src.core.report_generator import ReportGenerator
 gen = ReportGenerator()
 report_path = gen.generate_daily_report()

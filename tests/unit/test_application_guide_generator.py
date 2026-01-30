@@ -17,7 +17,7 @@ def mock_db():
     """Mock database with test jobs."""
     db = Mock(spec=Database)
 
-    # Mock high match jobs (score â‰¥ 0.85, decision_type='auto')
+    # Mock high match jobs (score â‰?0.85, decision_type='auto')
     high_match_job = Job(
         id=1,
         external_id="job1",

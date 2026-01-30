@@ -265,7 +265,7 @@ class AntigravityImporter:
         """
         if file_paths is None:
             # Auto-detect JSON files in data directory
-            data_dir = Path("W:\\Code\\job_viewer\\data")
+            data_dir = Path("data")
             file_paths = list(data_dir.glob("*_scraped.json"))
             logger.info(f"Auto-detected {len(file_paths)} JSON files")
 

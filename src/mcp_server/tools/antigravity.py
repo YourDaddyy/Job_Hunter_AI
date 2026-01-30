@@ -121,7 +121,7 @@ async def list_antigravity_instructions() -> Dict[str, Any]:
         Dictionary with list of instruction files and their details
     """
     try:
-        instructions_dir = Path("W:\\Code\\job_viewer\\instructions")
+        instructions_dir = Path("instructions")
 
         if not instructions_dir.exists():
             return {

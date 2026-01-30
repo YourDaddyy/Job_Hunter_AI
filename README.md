@@ -74,7 +74,7 @@ Claude will automatically:
 
 ### 1. Install Dependencies
 ```bash
-cd job_viewer
+cd JobHunterAI
 pip install -r requirements.txt
 ```
 
@@ -369,7 +369,7 @@ data/jobs.db             # Your job data
 
 **Try it now:**
 ```bash
-cd job_viewer
+cd JobHunterAI
 claude
 > /job-hunt
 ```
@@ -401,7 +401,7 @@ See **`DEVELOPMENT_GUIDE.md`** for:
 
 ### Project Structure
 ```
-job_viewer/
+JobHunterAI/
 ├── config/           # Your profile (resume, preferences, achievements)
 ├── src/              # Core code
 │   ├── agents/       # Instruction generators

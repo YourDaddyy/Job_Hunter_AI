@@ -33,7 +33,7 @@ from src.core.importer import (
 
 def create_sample_json_files():
     """Create sample JSON files for testing."""
-    data_dir = Path("W:\\Code\\job_viewer\\data")
+    data_dir = Path("data")
     data_dir.mkdir(exist_ok=True)
 
     # LinkedIn sample data (medium priority, visual platform)
@@ -146,7 +146,7 @@ def create_sample_json_files():
     with open(data_dir / "glassdoor_scraped.json", "w", encoding="utf-8") as f:
         json.dump(glassdoor_jobs, f, indent=2)
 
-    print("âœ“ Created sample JSON files:")
+    print("âœ?Created sample JSON files:")
     print(f"  - linkedin_scraped.json ({len(linkedin_jobs)} jobs)")
     print(f"  - indeed_scraped.json ({len(indeed_jobs)} jobs)")
     print(f"  - glassdoor_scraped.json ({len(glassdoor_jobs)} jobs)")
@@ -163,7 +163,7 @@ def test_fuzzy_hash():
     hash3 = generate_fuzzy_hash("  OpenAI  ", "  AI Engineer  ")
 
     assert hash1 == hash2 == hash3, "Fuzzy hashes should be identical"
-    print(f"  âœ“ Fuzzy hash: {hash1}")
+    print(f"  âœ?Fuzzy hash: {hash1}")
     print()
 
 
@@ -184,7 +184,7 @@ def test_salary_parsing():
     for salary_str, expected in tests:
         result = parse_salary(salary_str)
         assert result == expected, f"Failed: {salary_str} -> {result} (expected {expected})"
-        print(f"  âœ“ {salary_str} -> {result}")
+        print(f"  âœ?{salary_str} -> {result}")
 
     print()
 
@@ -198,10 +198,10 @@ def test_source_priority():
     assert determine_source_priority("linkedin") == 2, "LinkedIn should be priority 2"
     assert determine_source_priority("glassdoor") == 2, "Glassdoor should be priority 2"
 
-    print("  âœ“ indeed: 1 (high)")
-    print("  âœ“ wellfound: 1 (high)")
-    print("  âœ“ linkedin: 2 (medium)")
-    print("  âœ“ glassdoor: 2 (medium)")
+    print("  âœ?indeed: 1 (high)")
+    print("  âœ?wellfound: 1 (high)")
+    print("  âœ?linkedin: 2 (medium)")
+    print("  âœ?glassdoor: 2 (medium)")
     print()
 
 
@@ -222,7 +222,7 @@ def test_resolve_duplicate():
 
     action, data = resolve_duplicate(existing, new)
     assert action == "update_full", "Should update when new has higher priority"
-    print("  âœ“ Higher priority source -> update_full")
+    print("  âœ?Higher priority source -> update_full")
 
     # Test 2: Same priority, longer description
     existing = {
@@ -237,7 +237,7 @@ def test_resolve_duplicate():
 
     action, data = resolve_duplicate(existing, new)
     assert action == "update_description", "Should update description when new is longer"
-    print("  âœ“ Same priority, longer description -> update_description")
+    print("  âœ?Same priority, longer description -> update_description")
 
     # Test 3: Same priority, shorter description
     existing = {
@@ -252,7 +252,7 @@ def test_resolve_duplicate():
 
     action, data = resolve_duplicate(existing, new)
     assert action == "skip", "Should skip when new is shorter"
-    print("  âœ“ Same priority, shorter description -> skip")
+    print("  âœ?Same priority, shorter description -> skip")
 
     # Test 4: Lower priority source (higher number)
     existing = {
@@ -267,7 +267,7 @@ def test_resolve_duplicate():
 
     action, data = resolve_duplicate(existing, new)
     assert action == "skip", "Should skip when new has lower priority"
-    print("  âœ“ Lower priority source -> skip")
+    print("  âœ?Lower priority source -> skip")
     print()
 
 
@@ -284,9 +284,9 @@ def test_import_process():
 
     # Import files
     stats = importer.import_multiple_files([
-        "W:\\Code\\job_viewer\\data\\linkedin_scraped.json",
-        "W:\\Code\\job_viewer\\data\\indeed_scraped.json",
-        "W:\\Code\\job_viewer\\data\\glassdoor_scraped.json"
+        "data\\linkedin_scraped.json",
+        "data\\indeed_scraped.json",
+        "data\\glassdoor_scraped.json"
     ])
 
     print(f"\nImport Statistics:")
@@ -347,27 +347,27 @@ def test_import_process():
     # Expected: 3 (LinkedIn) + 1 (Indeed Meta) + 1 (Glassdoor Vercel) = 5 new
     # + 1 update (Indeed OpenAI updates LinkedIn OpenAI)
     assert total_jobs == 5, f"Expected 5 unique jobs, got {total_jobs}"
-    print("  âœ“ Correct number of unique jobs")
+    print("  âœ?Correct number of unique jobs")
 
     # OpenAI job should have been updated to Indeed version (better description)
     assert len(openai_jobs) == 1, "Should have exactly 1 OpenAI job"
     openai_job = openai_jobs[0]
     assert openai_job['source'] == 'indeed', "OpenAI job should be from Indeed (higher priority)"
     assert len(openai_job['jd_raw']) > 200, "OpenAI job should have long description"
-    print("  âœ“ OpenAI job updated to Indeed version")
+    print("  âœ?OpenAI job updated to Indeed version")
 
     # Stripe job should be from LinkedIn (longer description)
     assert len(stripe_jobs) == 1, "Should have exactly 1 Stripe job"
     stripe_job = stripe_jobs[0]
     assert stripe_job['source'] == 'linkedin', "Stripe job should be from LinkedIn"
-    print("  âœ“ Stripe job kept LinkedIn version (longer description)")
+    print("  âœ?Stripe job kept LinkedIn version (longer description)")
 
-    print("\nâœ“ All tests passed!")
+    print("\nâœ?All tests passed!")
 
 
 def cleanup_test_files():
     """Remove test JSON files."""
-    data_dir = Path("W:\\Code\\job_viewer\\data")
+    data_dir = Path("data")
     test_files = [
         "linkedin_scraped.json",
         "indeed_scraped.json",
@@ -379,7 +379,7 @@ def cleanup_test_files():
         file_path = data_dir / filename
         if file_path.exists():
             file_path.unlink()
-            print(f"  âœ“ Deleted {filename}")
+            print(f"  âœ?Deleted {filename}")
 
 
 def main():
@@ -405,11 +405,11 @@ def main():
         print("=" * 60)
 
     except AssertionError as e:
-        print(f"\nâœ— Test failed: {e}")
+        print(f"\nâœ?Test failed: {e}")
         return 1
 
     except Exception as e:
-        print(f"\nâœ— Unexpected error: {e}")
+        print(f"\nâœ?Unexpected error: {e}")
         import traceback
         traceback.print_exc()
         return 1

@@ -24,8 +24,8 @@ class InstructionGenerator:
 
     def __init__(
         self,
-        preferences_path: str = "W:\\Code\\job_viewer\\config\\preferences.md",
-        credentials_path: str = "W:\\Code\\job_viewer\\config\\credentials.md",
+        preferences_path: str = "config/preferences.md",
+        credentials_path: str = "config/credentials.md",
     ):
         """
         Initialize the instruction generator.
@@ -252,7 +252,7 @@ class InstructionGenerator:
 
     def generate_instructions(
         self,
-        output_dir: str = "W:\\Code\\job_viewer\\instructions",
+        output_dir: str = "instructions",
         filename: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
@@ -301,7 +301,7 @@ class InstructionGenerator:
         }
 
         # Generate platform-specific instructions
-        data_dir = Path("W:\\Code\\job_viewer\\data")
+        data_dir = Path("data")
         data_dir.mkdir(parents=True, exist_ok=True)
 
         for platform in self.preferences['enabled_platforms']:
@@ -350,7 +350,7 @@ class InstructionGenerator:
             'output_file': str(output_file),
         }
 
-    def generate_sample(self, output_file: str = "W:\\Code\\job_viewer\\instructions\\scrape_jobs_example.json"):
+    def generate_sample(self, output_file: str = "instructions/scrape_jobs_example.json"):
         """
         Generate a sample instruction file for demonstration.
 

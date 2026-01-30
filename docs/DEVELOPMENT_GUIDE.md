@@ -48,7 +48,7 @@ Automate job hunting with AI assistance:
 
 ## What's Implemented (Tasks 1-5)
 
-### ✅ Phase 1: Foundation (Tasks 1-2)
+### �?Phase 1: Foundation (Tasks 1-2)
 
 #### Task 1: Database Enhancement
 
@@ -109,7 +109,7 @@ CREATE INDEX idx_jobs_is_processed ON jobs(is_processed);
 
 ---
 
-### ✅ Phase 2: Core Features (Tasks 3-5)
+### �?Phase 2: Core Features (Tasks 3-5)
 
 #### Task 3: Antigravity Instruction Generator
 
@@ -228,9 +228,9 @@ When fuzzy match found, compare `source_priority`:
 
 **Example:**
 ```
-1. LinkedIn posts "Senior Engineer at Google" → Imported (priority=2)
-2. Greenhouse posts "Senior Engineer at Google" → Replaces LinkedIn version (priority=1)
-3. Indeed posts "Senior Engineer at Google" → Skipped (LinkedIn already has it, same priority)
+1. LinkedIn posts "Senior Engineer at Google" �?Imported (priority=2)
+2. Greenhouse posts "Senior Engineer at Google" �?Replaces LinkedIn version (priority=1)
+3. Indeed posts "Senior Engineer at Google" �?Skipped (LinkedIn already has it, same priority)
 ```
 
 **MCP Tool:**
@@ -287,19 +287,19 @@ Processes unfiltered jobs with GLM AI and routes to three tiers based on score.
 
 ```
                     GLM Scoring (0-100)
-                            │
-        ┌───────────────────┼───────────────────┐
-        │                   │                   │
-        ▼                   ▼                   ▼
-   Score ≥ 85          60 ≤ Score < 85      Score < 60
-        │                   │                   │
-        ▼                   ▼                   ▼
+                            �?
+        ┌───────────────────┼───────────────────�?
+        �?                  �?                  �?
+        �?                  �?                  �?
+   Score �?85          60 �?Score < 85      Score < 60
+        �?                  �?                  �?
+        �?                  �?                  �?
    TIER 1: HIGH        TIER 2: MEDIUM      TIER 3: LOW
    Auto-generate       Add to campaign     Auto-archive
    PDF resume          report (manual)     (rejected)
 ```
 
-**Tier 1: HIGH MATCH (≥85)**
+**Tier 1: HIGH MATCH (�?5)**
 - Action: Auto-generate tailored PDF resume
 - Status: `matched`
 - Decision type: `auto`
@@ -398,7 +398,7 @@ Uses Claude API to:
 **Cost Tracking:**
 - GLM API: ~$0.001 per job
 - Claude API (resume): ~$0.02 per resume
-- Example: 120 jobs → $0.03 (GLM) + $0.16 (8 resumes) = $0.19
+- Example: 120 jobs �?$0.03 (GLM) + $0.16 (8 resumes) = $0.19
 
 ---
 
@@ -586,7 +586,7 @@ Daily Workflow:
 1. Generate Antigravity instructions (Task 3)
 2. User runs Antigravity (~5 min)
 3. Import Antigravity results (Task 4)
-4. **Scan ATS platforms (Task 6)** ← NEW, automated
+4. **Scan ATS platforms (Task 6)** �?NEW, automated
 5. Process all with GLM (Task 5)
 6. Generate campaign report (Task 7)
 ```
@@ -615,7 +615,7 @@ class CampaignReportGenerator:
         Generate campaign report for a specific date.
 
         Sections:
-        1. HIGH MATCH JOBS (Tier 1, score ≥85)
+        1. HIGH MATCH JOBS (Tier 1, score �?5)
         2. MEDIUM MATCH JOBS (Tier 2, 60≤score<85)
         3. Statistics & Cost
         """
@@ -661,7 +661,7 @@ class CampaignReportGenerator:
 
         md = f"""# Application Queue ({date})
 
-## HIGH MATCH JOBS (Auto-Generated Resumes) ✓
+## HIGH MATCH JOBS (Auto-Generated Resumes) �?
 
 | Status | Score | Company | Role | Resume | Apply |
 |--------|-------|---------|------|--------|-------|
@@ -672,7 +672,7 @@ class CampaignReportGenerator:
             md += f"| [ ] | {job.ai_score} | {job.company} | {job.title} | [PDF]({resume_path}) | [Apply]({job.url}) |\n"
 
         md += f"""
-→ **Ready to apply!** Resumes already customized for these jobs.
+�?**Ready to apply!** Resumes already customized for these jobs.
 
 ## MEDIUM MATCH JOBS (Need Your Decision) ⚠️
 
@@ -743,7 +743,7 @@ async def generate_campaign_report(
 ```markdown
 # Application Queue (2026-01-29)
 
-## HIGH MATCH JOBS (Auto-Generated Resumes) ✓
+## HIGH MATCH JOBS (Auto-Generated Resumes) �?
 
 | Status | Score | Company | Role | Resume | Apply |
 |--------|-------|---------|------|--------|-------|
@@ -751,7 +751,7 @@ async def generate_campaign_report(
 | [ ] | 88 | Cohere | ML Engineer | [PDF](output/Cohere_ML_Engineer.pdf) | [Apply](https://jobs.lever.co/cohere/...) |
 | [ ] | 86 | Anthropic | Research Engineer | [PDF](output/Anthropic_Research_Engineer.pdf) | [Apply](https://jobs.lever.co/anthropic/...) |
 
-→ **Ready to apply!** Resumes already customized for these jobs.
+�?**Ready to apply!** Resumes already customized for these jobs.
 
 ## MEDIUM MATCH JOBS (Need Your Decision) ⚠️
 
@@ -777,7 +777,7 @@ async def generate_campaign_report(
 Daily Workflow:
 ...
 5. Process all with GLM (Task 5)
-6. **Generate campaign report (Task 7)** ← NEW
+6. **Generate campaign report (Task 7)** �?NEW
 7. User reviews report, approves medium matches
 8. Generate application instructions (Task 8)
 ```
@@ -1003,7 +1003,7 @@ Daily Workflow:
 ...
 6. Generate campaign report (Task 7)
 7. User reviews report, approves medium matches
-8. **Generate application instructions (Task 8)** ← NEW
+8. **Generate application instructions (Task 8)** �?NEW
 9. User runs Antigravity to auto-apply (~5 min)
 10. Antigravity pauses before each submit for final check
 ```
@@ -1028,7 +1028,7 @@ See `docs/ARCHITECTURE.md` for detailed architecture diagrams and design decisio
 
 ```bash
 # Clone repository
-cd W:/Code/job_viewer
+cd .
 
 # Create virtual environment
 python -m venv venv
@@ -1101,7 +1101,7 @@ def process_jobs_with_glm(
     Returns:
         Dictionary containing:
             - total_processed: Number of jobs processed
-            - tier1_high_match: Count of high match jobs (≥85)
+            - tier1_high_match: Count of high match jobs (�?5)
             - tier2_medium_match: Count of medium match jobs (60-84)
             - tier3_low_match: Count of low match jobs (<60)
             - resumes_generated: Number of resumes auto-generated
@@ -1296,23 +1296,23 @@ CREATE INDEX idx_jobs_ai_score ON jobs(ai_score);
 ```
 1. User: "Start job hunt"
 
-2. Claude → generate_antigravity_scraping_guide()
-   → Creates instructions/scrape_jobs_2026-01-29.json
+2. Claude �?generate_antigravity_scraping_guide()
+   �?Creates instructions/scrape_jobs_2026-01-29.json
 
 3. Claude: "Please run: antigravity run instructions/..."
 
 4. User: [Runs Antigravity, ~5 min]
-   → Saves to data/*.json
+   �?Saves to data/*.json
 
 5. User: "Done scraping"
 
-6. Claude → import_antigravity_results()
-   → Imports 150 jobs, deduplicates to 120 unique
+6. Claude �?import_antigravity_results()
+   �?Imports 150 jobs, deduplicates to 120 unique
 
-7. Claude → process_jobs_with_glm_tool()
-   → Scores all 120 jobs
-   → Generates 8 resumes for Tier 1 (≥85)
-   → Marks 18 as Tier 2 (60-84) for user review
+7. Claude �?process_jobs_with_glm_tool()
+   �?Scores all 120 jobs
+   �?Generates 8 resumes for Tier 1 (�?5)
+   �?Marks 18 as Tier 2 (60-84) for user review
 
 8. Claude: "Processing complete. 8 high matches with resumes ready, 18 medium matches for review."
 ```
@@ -1322,28 +1322,28 @@ CREATE INDEX idx_jobs_ai_score ON jobs(ai_score);
 ```
 1-5. [Same as above]
 
-6. Claude → import_antigravity_results()
+6. Claude �?import_antigravity_results()
 
-7. Claude → scan_ats_platforms()  [NEW - Task 6]
-   → Finds 45 ATS jobs, imports 30 new
+7. Claude �?scan_ats_platforms()  [NEW - Task 6]
+   �?Finds 45 ATS jobs, imports 30 new
 
-8. Claude → process_jobs_with_glm_tool()
-   → Scores all jobs (120 + 30 = 150)
+8. Claude �?process_jobs_with_glm_tool()
+   �?Scores all jobs (120 + 30 = 150)
 
-9. Claude → generate_campaign_report()  [NEW - Task 7]
-   → Creates campaigns/campaign_2026-01-29.md
+9. Claude �?generate_campaign_report()  [NEW - Task 7]
+   �?Creates campaigns/campaign_2026-01-29.md
 
 10. Claude: "Report ready at campaigns/campaign_2026-01-29.md"
 
 11. User: Reviews report, approves some medium matches
 
-12. Claude → generate_application_instructions()  [NEW - Task 8]
-    → Creates instructions/apply_jobs_2026-01-29.json
+12. Claude �?generate_application_instructions()  [NEW - Task 8]
+    �?Creates instructions/apply_jobs_2026-01-29.json
 
 13. Claude: "Please run: antigravity run instructions/apply_jobs_..."
 
 14. User: [Runs Antigravity to auto-apply, ~5 min]
-    → Antigravity pauses before each submit
+    �?Antigravity pauses before each submit
 
 15. User: Reviews each application, clicks Submit
 ```

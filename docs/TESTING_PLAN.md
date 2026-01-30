@@ -384,7 +384,7 @@ print(f"PDF generated: {output_path}")
 
 ### 3.1 LinkedIn HTTP 451 Error
 
-**Symptom:** Job search returns "HTTP ERROR 451" or Chinese error page "该网页无法正常运作"
+**Symptom:** Job search returns "HTTP ERROR 451" or Chinese error page "该网页无法正常运�?
 
 **Cause:** LinkedIn blocks access from certain IPs/regions, especially cloud servers or VPNs.
 
@@ -464,10 +464,10 @@ print(f"PDF generated: {output_path}")
 
 ### Integration Tests
 
-- [ ] Full scrape cycle: login → search → parse → save to DB
+- [ ] Full scrape cycle: login �?search �?parse �?save to DB
 - [ ] Job filtering: new jobs scored against preferences
 - [ ] Notification: jobs meeting threshold trigger alert
-- [ ] Resume tailoring: job description → tailored resume PDF
+- [ ] Resume tailoring: job description �?tailored resume PDF
 
 ---
 

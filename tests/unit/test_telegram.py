@@ -167,7 +167,7 @@ class TestMessageSending:
         
         assert msg_id == 1
         call_args = telegram_bot.app.bot.send_message.call_args
-        assert "‚úÖ" in call_args[1]['text']
+        assert "‚ú? in call_args[1]['text']
 
     @pytest.mark.asyncio
     async def test_send_job_notification_failed(self, telegram_bot, sample_job, mock_database):
@@ -178,7 +178,7 @@ class TestMessageSending:
         
         assert msg_id == 1
         call_args = telegram_bot.app.bot.send_message.call_args
-        assert "‚ùå" in call_args[1]['text']
+        assert "‚ù? in call_args[1]['text']
 
     @pytest.mark.asyncio
     async def test_send_job_notification_not_found(self, telegram_bot, mock_database):
@@ -199,7 +199,7 @@ class TestMessageFormatting:
     """Test message formatting methods."""
 
     def test_format_job_match_high_score(self, telegram_bot, sample_job):
-        """Test formatting job match with high score (‚â•0.85)."""
+        """Test formatting job match with high score (‚â?.85)."""
         sample_job.match_score = 0.92
         
         text = telegram_bot._format_job_match(sample_job)
@@ -215,7 +215,7 @@ class TestMessageFormatting:
         
         text = telegram_bot._format_job_match(sample_job)
         
-        assert "‚ú®" in text  # Medium score emoji
+        assert "‚ú? in text  # Medium score emoji
         assert "75%" in text
 
     def test_format_salary_full_range(self, telegram_bot, sample_job):
@@ -260,9 +260,9 @@ class TestMessageFormatting:
         
         result = telegram_bot._format_list(items)
         
-        assert "‚Ä¢ Python" in result
-        assert "‚Ä¢ React" in result
-        assert result.count("‚Ä¢ ") == 4
+        assert "‚Ä?Python" in result
+        assert "‚Ä?React" in result
+        assert result.count("‚Ä?") == 4
 
     def test_format_list_empty(self, telegram_bot):
         """Test formatting empty list."""
@@ -288,7 +288,7 @@ class TestMessageFormatting:
         
         assert "‚ö†Ô∏è" in result
         assert "Concerns" in result
-        assert "‚Ä¢ Requires relocation" in result
+        assert "‚Ä?Requires relocation" in result
 
 
 # ============================================================================

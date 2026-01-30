@@ -1,1 +1,1 @@
-"""Unit tests for job_viewer."""
+"""Unit tests for JobHunterAI."""

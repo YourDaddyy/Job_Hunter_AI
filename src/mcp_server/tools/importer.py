@@ -104,7 +104,7 @@ async def list_importable_files() -> Dict[str, Any]:
         }
     """
     try:
-        data_dir = Path("W:\\Code\\job_viewer\\data")
+        data_dir = Path("data")
 
         if not data_dir.exists():
             return {

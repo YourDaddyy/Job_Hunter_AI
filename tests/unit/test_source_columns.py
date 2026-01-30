@@ -10,7 +10,7 @@ def test_source_columns():
     print("TESTING SOURCE TRACKING COLUMNS")
     print("=" * 80)
 
-    db_path = r"W:\Code\job_viewer\data\jobs.db"
+    db_path = r"W:\Code\JobHunterAI\data\jobs.db"
     print(f"\nConnecting to: {db_path}")
 
     conn = sqlite3.connect(db_path)

@@ -6,7 +6,7 @@ Tests the three-tier job filtering system:
 2. Loads achievements.md and preferences.md
 3. Calls GLM to score each job 0-100
 4. Implements three tiers:
-   - â‰¥85: Generate resume (Tier 1)
+   - â‰?5: Generate resume (Tier 1)
    - 60-84: Add to report (Tier 2)
    - <60: Archive (Tier 3)
 5. Updates database with ai_score, ai_reasoning, is_processed=TRUE
@@ -78,7 +78,7 @@ async def test_gl_processor():
         logger.info("Processing Results:")
         logger.info("=" * 80)
         logger.info(f"Total Processed: {stats.total_processed}")
-        logger.info(f"Tier 1 (â‰¥85): {stats.tier1_high_match}")
+        logger.info(f"Tier 1 (â‰?5): {stats.tier1_high_match}")
         logger.info(f"Tier 2 (60-84): {stats.tier2_medium_match}")
         logger.info(f"Tier 3 (<60): {stats.tier3_low_match}")
         logger.info(f"Resumes Generated: {stats.resumes_generated}")

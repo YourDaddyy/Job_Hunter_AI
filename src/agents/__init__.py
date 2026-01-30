@@ -1,5 +1,5 @@
 """
-Agents module for job_viewer.
+Agents module for JobHunterAI.
 
 This module contains AI agent configurations and instruction generators.
 """
