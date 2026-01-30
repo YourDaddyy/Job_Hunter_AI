@@ -319,10 +319,10 @@ All configuration is in **human-readable Markdown files** (not JSON or YAML):
 
 | Service | Purpose | Cost |
 |---------|---------|------|
-| **GLM API** | Job filtering (cheap AI) | ~$0.001/job = $0.05/50 jobs |
-| **Claude API** | Resume tailoring (optional) | ~$0.02/resume = $0.16/8 resumes |
+| **GLM API** | Job filtering + resume (default) | ~$0.001/job + ~$0.005/resume |
+| **OpenAI/Gemini/Claude** | Alternative LLM providers | Varies by model |
 | **Telegram Bot** | Notifications (optional) | Free |
-| **Total per day** | 50 jobs + 8 resumes | **~$0.20/day** or **$6/month** |
+| **Total per day** | 50 jobs + 8 resumes | **~$0.10/day** or **$3/month** (GLM) |
 
 **Compare to:**
 - Job board premium subscriptions: $30-100/month
@@ -393,8 +393,8 @@ See **`DEVELOPMENT_GUIDE.md`** for:
 ### Tech Stack
 - **Language:** Python 3.10+
 - **Database:** SQLite with WAL mode
-- **AI Filtering:** GLM API (智谱AI)
-- **Resume Tailoring:** Claude API (Anthropic)
+- **AI Filtering:** Multi-LLM (GLM, OpenAI, Gemini, Claude, OpenRouter)
+- **Resume Tailoring:** Multi-LLM (configurable via config/llm_providers.md)
 - **Browser Automation:** Antigravity
 - **Orchestration:** Claude Code CLI + MCP Server
 - **Config:** Markdown files (human-readable)
@@ -431,7 +431,7 @@ See `docs/DEVELOPMENT_GUIDE.md` for:
 - How to add new MCP tools
 - How to add new data sources
 - Code style and testing
-- Current task list (Tasks 6-8)
+- Enhancement opportunities
 
 ---
 
@@ -507,7 +507,7 @@ The AI learns from your preferences.md file, so accuracy improves as you refine 
 ### Want to Develop?
 1. Read `DEVELOPMENT_GUIDE.md`
 2. Review current architecture
-3. Pick a task (6, 7, or 8)
+3. Explore enhancement opportunities (new platforms, better filtering)
 4. Follow implementation guide
 
 ---
